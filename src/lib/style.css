@@ -16,7 +16,7 @@ header {
 footer {
     width: 100%;
     height: auto;
-    background: url('../images/footer.png') no-repeat center center fixed;
+    background: url('/images/footer.png') no-repeat center center fixed;
     background-size: cover;
     bottom: 0;
     left: 0;
@@ -132,7 +132,7 @@ p.lead {
 
 @font-face {
 	font-family: 'pizza-hut.otf';
-	src: url('../fonts/pizza-hut.otf'); /* IE 9 Compatibility Mode */
+	src: url('/assets/pizza-hut.otf'); /* IE 9 Compatibility Mode */
 
 }
 

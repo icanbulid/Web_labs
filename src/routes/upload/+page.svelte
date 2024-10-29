@@ -1,0 +1,49 @@
+<script>
+  const onsubmit = async (event) => {
+    event.preventDefault() // Предотвращаем перезагрузку страницы
+    const formData = new FormData(event.target)
+
+    // Получаем ID пользователя из локального хранилища
+    const user = JSON.parse(localStorage.getItem('user'))
+    if (!user || !user.id) {
+      document.getElementById('message').innerText = 'Пользователь не найден. Пожалуйста, войдите в систему.'
+      return
+    }
+
+    // Добавляем ID пользователя в formData
+    formData.append('userId', user.id)
+
+    try {
+      const response = await fetch('http://localhost:5502/upload-avatar', {
+        method: 'POST',
+        body: formData,
+      })
+      const result = await response.json()
+      document.getElementById('message').innerText = result.message
+      if (response.ok) {
+        // Обновление аватара пользователя в локальном хранилище
+        user.avatar_url = result.avatarUrl // Убедитесь, что ключ совпадает с тем, что возвращает сервер
+        localStorage.setItem('user', JSON.stringify(user))
+
+        // Обновление аватара на странице login.html
+        const avatarElement = document.getElementById('avatar')
+        if (avatarElement) {
+          avatarElement.src = result.avatarUrl // Устанавливаем новый URL аватара
+        }
+
+        // Перенаправление на главную страницу через 1 секунду
+        setTimeout(() => {
+          window.location.href = 'http://127.0.0.1:5502/pages/index.html' // Измените на нужный URL
+        }, 300)
+      }
+    } catch (error) {
+      console.error('Ошибка:', error)
+      document.getElementById('message').innerText = 'Ошибка при загрузке аватара'
+    }
+  }
+</script>
+
+<form id="avatar-upload-form" enctype="multipart/form-data" {onsubmit}>
+  <input type="file" name="avatar" required />
+  <button type="submit">Загрузить аватар</button>
+</form>
