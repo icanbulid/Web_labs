@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль пользователя</title>
+</head>
+<body>
+    <h1>Профиль пользователя</h1>
+    <div id="user-profile">
+        <img id="avatar" src="" alt="Аватар" style="max-width: 200px;"/>
+        <p id="username"></p>
+        <p id="email"></p>
+    </div>
+
+    <script>
+        const userId = 2; // Замените на ID пользователя, информацию о котором вы хотите получить
+
+        fetch(`http://localhost:5502/user/${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.user) {
+                    document.getElementById('avatar').src = data.user.avatar_url;
+                    document.getElementById('username').textContent = `Имя пользователя: ${data.user.username}`;
+                    document.getElementById('email').textContent = `Email: ${data.user.email}`;
+                } else {
+                    console.error(data.message);
+                }
+            })
+            .catch(error => console.error('Ошибка:', error));
+    </script>
+</body>
+</html>

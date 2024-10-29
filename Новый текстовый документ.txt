@@ -1,0 +1,8 @@
+SELECT
+    em."id",
+    em."email",
+    em."login",
+    em."first_name",
+    em."last_name",
+    em."password"
+FROM "golden_middle"."public"."users" em;
