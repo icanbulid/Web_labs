@@ -11,9 +11,46 @@ window.onload = function() {
             if (user) {
                 displayAccountInfo(user);
             }
+
+            // После загрузки заголовка, выделяем активную ссылку
+            highlightActiveLink();
+
+            // Блокируем кнопки
+            Buttonlock();
         })
         .catch(error => console.error('Ошибка загрузки header.html:', error));
 };
+
+function highlightActiveLink() {
+    const currentUrl = window.location.pathname; // Получаем текущий путь
+    const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+
+    navLinks.forEach(link => {
+        // Если href заканчивается на текущий URL и не является ссылкой на аккаунт
+        if (link.href.includes(currentUrl) && !link.classList.contains('account-link')) {
+            link.classList.add("active-link");
+        }
+    });
+}
+
+function Buttonlock() {
+    const currentPage = window.location.pathname.split("/").pop(); // Получаем имя текущей страницы
+
+    // Получаем кнопки
+    const loginButton = document.getElementById('loginButton');
+    const registerButton = document.getElementById('registerButton');
+
+    // Проверяем, на какой странице мы находимся и скрываем соответствующие кнопки
+    if (currentPage === 'Login.html') {
+        if (loginButton) {
+            loginButton.style.display = 'none'; // Скрыть кнопку "Войти"
+        }
+    } else if (currentPage === 'Register.html') {
+        if (registerButton) {
+            registerButton.style.display = 'none'; // Скрыть кнопку "Регистрация"
+        }
+    }
+}
 
 function displayAccountInfo(user) {
     // Убедитесь, что элементы существуют
@@ -43,6 +80,3 @@ function displayAccountInfo(user) {
         });
     }
 }
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/index.html')); // или другой HTML файл, который вы хотите вернуть
-});
