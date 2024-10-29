@@ -1,29 +1,19 @@
 <script>
+  import { userStore } from '$lib/stores/user.svelte'
+
+  let errorMessage = $state('')
+
   const onsubmit = async (event) => {
     event.preventDefault()
+    errorMessage = ''
 
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData.entries())
 
     try {
-      const response = await fetch('http://localhost:5502/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (response.ok) {
-        const userData = await response.json()
-        localStorage.setItem('user', JSON.stringify(userData.user))
-        displayAccountInfo(userData.user)
-      } else {
-        const errorData = await response.json()
-        document.getElementById('login-error-message').innerText = errorData.message || 'Ошибка входа'
-      }
-    } catch (error) {
-      document.getElementById('login-error-message').innerText = 'Ошибка сервера'
+      await userStore.login(data)
+    } catch (_e) {
+      errorMessage = 'Ошибка входа'
     }
   }
 </script>

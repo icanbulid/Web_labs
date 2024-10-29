@@ -8,7 +8,7 @@ import { db } from './db/index.js'
 
 const app = new Hono()
 
-app.use('/uploads/*', serveStatic({ 'root': './public/' }))
+app.use('/uploads/*', serveStatic({ root: './public/' }))
 // app.get('/ui', swaggerUI())
 
 app.get('/', (c) => c.text('Hono!'))
@@ -16,7 +16,7 @@ const port = 3000
 
 serve({
   fetch: app.fetch,
-  port
+  port,
 })
 
 app.post('/upload-avatar', async (c) => {
@@ -46,14 +46,15 @@ app.post('/login', async (c) => {
   return c.json(user)
 })
 
-
 app.post('/register', async (c) => {
   const { email, username, first_name, last_name, password, confirm_password } = await c.req.json()
 
-  if (password !== confirm_password) return c.json({ message: 'Пароли не совпадают', }, 401)
+  if (password !== confirm_password) return c.json({ message: 'Пароли не совпадают' }, 401)
 
   try {
-    const create = db.prepare('INSERT INTO users (email, username, first_name, last_name, password) VALUES (?, ?, ?, ?, ?)')
+    const create = db.prepare(
+      'INSERT INTO users (email, username, first_name, last_name, password) VALUES (?, ?, ?, ?, ?)',
+    )
     const res = await create(email, username, first_name, last_name, password)
     console.log(res)
     return c.json({ message: 'Пользователь успешно зарегистрировался', user: user })

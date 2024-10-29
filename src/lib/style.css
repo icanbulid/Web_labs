@@ -1,105 +1,95 @@
 header {
-    text-align: center;
-    & a {
-      color: black;
-    }
-    margin-bottom: -20px
+  text-align: center;
+  & a {
+    color: black;
   }
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    & h1 {
-      margin: 25px;
-    }
+  margin-bottom: -20px;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  & h1 {
+    margin: 25px;
   }
+}
 footer {
-    width: 100%;
-    height: auto;
-    background: url('/images/footer.png') no-repeat center center fixed;
-    background-size: cover;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin-top: 15px;
+  width: 100%;
+  height: auto;
+  background: url('/images/footer.png') no-repeat center center fixed;
+  background-size: cover;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-top: 15px;
 }
 
 .footer-divider {
-    border-top: 1px solid #000000; /* Граница разделителя */
-    margin-top: 15px;
-  }
-  
-  .footer-content {
-    padding-bottom: 30px;
-  }
-  
-  .copyright {
-    font-size: 14px;
-    color: #6c757d;
-  }
+  border-top: 1px solid #000000; /* Граница разделителя */
+  margin-top: 15px;
+}
 
+.footer-content {
+  padding-bottom: 30px;
+}
 
+.copyright {
+  font-size: 14px;
+  color: #6c757d;
+}
 
-  .col-12 {
-    padding: 0 15px;
-  }
-  
+.col-12 {
+  padding: 0 15px;
+}
 
-  input[type="email"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+input[type='email'] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
-  
+input[type='text'],
+input[type='password'] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
-  
-  input[type="text"],
-  input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-weight: bold;
-  }
-  
-  input[type="submit"]:hover {
-    background-color: #0069d9;
-  }
+input[type='submit'] {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+}
 
+input[type='submit']:hover {
+  background-color: #0069d9;
+}
 
-
-textarea{
+textarea {
   width: 200%;
-  
 }
 .form-control {
-  width: 100%; 
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
   padding: 10px;
   box-sizing: border-box;
 }
-.register-input{
-
-  width: 100%; 
+.register-input {
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
   padding: 10px;
   box-sizing: border-box;
 }
 .search-input {
-  width: 100%; 
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
   padding: 10px;
@@ -107,16 +97,18 @@ textarea{
 }
 
 .form-group {
-  margin-bottom: 15px; 
+  margin-bottom: 15px;
 }
 
-form{margin: 0 auto;}
+form {
+  margin: 0 auto;
+}
 .form-login {
   width: 100%;
-  max-width: 350px; 
-  margin: 0 auto; 
-  padding: 10px; 
-  box-sizing: border-box; 
+  max-width: 350px;
+  margin: 0 auto;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 p.lead {
@@ -127,23 +119,16 @@ p.lead {
   text-indent: 0; /* Убираем отступ с красной строки для других элементов, включая списки */
 }
 
-
-
-
 @font-face {
-	font-family: 'pizza-hut.otf';
-	src: url('/assets/pizza-hut.otf'); /* IE 9 Compatibility Mode */
-
+  font-family: 'pizza-hut.otf';
+  src: url('/assets/pizza-hut.otf'); /* IE 9 Compatibility Mode */
 }
-
 
 .logo-text {
   font-size: 40px;
   font-weight: 500;
-  font-family: "pizza-hut.otf";
+  font-family: 'pizza-hut.otf';
 }
-
-
 
 a:active {
   color: orange;
@@ -156,7 +141,6 @@ a:hover {
 a {
   text-decoration: none;
 }
-
 
 a:hover {
   color: rgb(25, 0, 255);
@@ -185,8 +169,8 @@ a:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Добавление тени */
 }
 
-iframe{
-  margin-bottom: 25 ;
+iframe {
+  margin-bottom: 25;
 }
 
 .custom-img {
@@ -202,13 +186,15 @@ iframe{
   text-decoration: none;
 }
 
-.nav-link.active-link { 
+.nav-link.active-link {
   text-decoration: none; /* Убираем подчеркивание */
   pointer-events: none; /* Делаем ссылку неактивной */
   cursor: default; /* Устанавливаем курсор по умолчанию */
 }
 .dropdown-item {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .dropdown-item:hover {
@@ -225,5 +211,8 @@ iframe{
 .dropdown-item {
   border: 2px solid transparent; /* Прозрачная рамка по умолчанию */
   border-radius: 5px; /* Закругленные углы */
-  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border 0.3s ease;
 }

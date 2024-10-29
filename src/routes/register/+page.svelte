@@ -1,5 +1,6 @@
 <script>
   import { goto } from '$app/navigation'
+  import { userStore } from '$lib/stores/user.svelte'
 
   let errorMessage = $state('')
 
@@ -16,26 +17,9 @@
     }
 
     try {
-      const response = await fetch('http://localhost:5502/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: data.email,
-          username: data.username,
-          first_name: data.first_name,
-          last_name: data.last_name,
-          password: data.password,
-        }),
-      })
-
-      if (response.ok) {
-        goto('/register-success')
-        const errorData = await response.json()
-        errorMessage = errorData.message || 'Ошибка сервера'
-      }
-    } catch (error) {
+      await userStore.register(data)
+      goto('/register-success')
+    } catch (_e) {
       errorMessage = 'Ошибка сервера'
     }
   }

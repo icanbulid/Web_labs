@@ -1,16 +1,19 @@
 <script>
+  import { goto } from '$app/navigation'
+  import { userStore } from '$lib/stores/user.svelte'
+  import { onMount } from 'svelte'
+
+  onMount(() => {
+    if (!userStore.user) goto('/login')
+  })
+
+  let user = $derived(userStore.user)
+
   const onsubmit = async (event) => {
-    event.preventDefault() // Предотвращаем перезагрузку страницы
+    event.preventDefault()
+    if (!user) return
     const formData = new FormData(event.target)
 
-    // Получаем ID пользователя из локального хранилища
-    const user = JSON.parse(localStorage.getItem('user'))
-    if (!user || !user.id) {
-      document.getElementById('message').innerText = 'Пользователь не найден. Пожалуйста, войдите в систему.'
-      return
-    }
-
-    // Добавляем ID пользователя в formData
     formData.append('userId', user.id)
 
     try {
@@ -30,11 +33,6 @@
         if (avatarElement) {
           avatarElement.src = result.avatarUrl // Устанавливаем новый URL аватара
         }
-
-        // Перенаправление на главную страницу через 1 секунду
-        setTimeout(() => {
-          window.location.href = 'http://127.0.0.1:5502/pages/index.html' // Измените на нужный URL
-        }, 300)
       }
     } catch (error) {
       console.error('Ошибка:', error)
