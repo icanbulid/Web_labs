@@ -7,5 +7,5 @@ npm run dev
 
 Чтобы создать бд с турами и двумя юзерами заново
 ```bash
-npm run db:seen
+npm run db:seed
 ```
