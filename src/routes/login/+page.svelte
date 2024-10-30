@@ -1,4 +1,5 @@
 <script>
+  import { goto } from '$app/navigation'
   import { userStore } from '$lib/stores/user.svelte'
 
   let errorMessage = $state('')
@@ -11,7 +12,10 @@
     const data = Object.fromEntries(formData.entries())
 
     try {
-      await userStore.login(data)
+      const res = await userStore.login(data)
+      if ('message' in res) {
+        errorMessage = res.message
+      } else goto('/catalog')
     } catch (_e) {
       errorMessage = 'Ошибка входа'
     }
@@ -19,13 +23,13 @@
 </script>
 
 <div class="col-12">
-  <h1 class="text-center">Логин</h1>
+  <h1 class="text-center">Вход</h1>
 </div>
 
 <div class="col-12 text-center" id="login-container">
   <form id="loginForm" {onsubmit}>
     <div class="form-login">
-      <input type="text" class="form-control" placeholder="Логин или почта" name="username" required />
+      <input type="text" class="form-control" placeholder="Почта" name="email" required />
     </div>
     <div class="form-login">
       <input type="password" class="form-control" placeholder="Пароль" name="password" required />

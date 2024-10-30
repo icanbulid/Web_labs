@@ -9,7 +9,8 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
     "format": "prettier --write .",
-    "lint": "prettier --check . && eslint ."
+    "lint": "prettier --check . && eslint .",
+    "db:seed": "node src/lib/server/db/seed.js"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^3.0.0",
@@ -29,6 +30,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.3",
+    "better-sqlite3": "^11.5.0",
     "bootstrap": "^5.3.3",
     "font-awesome": "^4.7.0",
     "hono": "^4.6.8"

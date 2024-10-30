@@ -7,9 +7,9 @@
 
   const { children } = $props()
 
-  onMount(() => {
-    userStore.load()
-  })
+  // onMount(() => {
+  //   userStore.load()
+  // })
 </script>
 
 <div class="">

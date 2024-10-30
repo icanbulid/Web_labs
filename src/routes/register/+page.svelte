@@ -17,8 +17,10 @@
     }
 
     try {
-      await userStore.register(data)
-      goto('/register-success')
+      const res = await userStore.register(data)
+      if ('message' in res) {
+        errorMessage = res.message
+      } else goto('/register-success')
     } catch (_e) {
       errorMessage = 'Ошибка сервера'
     }
@@ -54,5 +56,5 @@
 </div>
 
 <div class="col-12 text-center">
-  <a class="nav-flex-link" href="Login.html">Уже зарегистрированы? Логин</a>
+  <a class="nav-flex-link" href="/login">Уже зарегистрированы? Логин</a>
 </div>

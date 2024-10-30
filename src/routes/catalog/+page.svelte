@@ -1,54 +1,25 @@
 <script>
-  const catalog = $state([
-    {
-      title: 'Тур в Псков',
-      img: '/images/tours/Pskov.png',
-    },
-    {
-      title: 'Тур в Беларусь',
-      img: '/images/tours/Belarus.png',
-    },
-    {
-      title: 'Джиптур по Дагестану',
-      img: '/images/tours/Dagestan.png',
-    },
-    {
-      title: 'Тур в Калининград',
-      img: '/images/tours/Kaliningrad.png',
-    },
-    {
-      title: 'Тур в Карелию',
-      img: '/images/tours/Karelia.png',
-    },
-    {
-      title: 'Тур в Марокко',
-      img: '/images/tours/Marokko.png',
-    },
-    {
-      title: 'Тур в Смоленск',
-      img: '/images/tours/smolensk.png',
-    },
-    {
-      title: 'Тур в Узбекистан',
-      img: '/images/tours/Uzbekistan.png',
-    },
-  ])
+  import { toursStore } from '$lib/stores/tours.svelte'
+  import { page } from '$app/stores'
+
+  let search = $state(decodeURIComponent($page.url.searchParams.get('search') || ''))
+  let catalog = $derived(toursStore.tours)
+  let status = $derived(toursStore.status)
+
+  $effect(() => {
+    search = decodeURIComponent($page.url.searchParams.get('search') || '')
+  })
+
+  let filteredCatalog = $derived.by(() => {
+    if (!search) return catalog
+    return catalog.filter((tour) => tour.title.toLowerCase().includes(search.toLowerCase()))
+  })
 
   const rows = $derived.by(() => {
     const rows = []
-    for (let i = 0; i < catalog.length; i++) {
-      if (i % 4 === 0)
-        rows.push([
-          {
-            title: catalog[i].title,
-            img: catalog[i].img,
-          },
-        ])
-      else
-        rows.at(-1)?.push({
-          title: catalog[i].title,
-          img: catalog[i].img,
-        })
+    for (let i = 0; i < filteredCatalog.length; i++) {
+      if (i % 4 === 0) rows.push([filteredCatalog[i]])
+      else rows.at(-1)?.push(filteredCatalog[i])
     }
     return rows
   })
@@ -61,19 +32,28 @@
     </div>
   </div>
 </div>
-<main class="container mt-4">
-  {#each rows as row}
-    <div class="row">
-      {#each row as item}
-        <div class="col-md-3 mb-4">
-          <div class="card text-center hover-effect">
-            <img src={item.img} class="card-img-top" alt="Псков" />
-            <div class="card-body">
-              <h5 class="card-title">{item.title}</h5>
-            </div>
-          </div>
-        </div>
-      {/each}
+{#if status === 'loading'}
+  <main style="display: flex; justify-content: center; align-items: center;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
-  {/each}
-</main>
+  </main>
+{:else if status === 'succeed'}
+  <main class="container mt-4">
+    {#each rows as row}
+      <div class="row">
+        {#each row as item}
+          <a href={`\\catalog\\${item.id}`} class="col-md-3 mb-4">
+            <div class="card text-center hover-effect">
+              <img src={item.img_url} class="card-img-top" alt="Псков" />
+              <div class="card-body">
+                <h5 class="card-title">{item.title}</h5>
+                <span>{item.price} руб.</span>
+              </div>
+            </div>
+          </a>
+        {/each}
+      </div>
+    {/each}
+  </main>
+{/if}
