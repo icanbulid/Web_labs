@@ -119,8 +119,10 @@ app.post('/login', async (c) => {
 app.post('/register', async (c) => {
   try {
     const body = await c.req.json()
-    if (body.password !== body.confirm_password) return c.json({ message: 'Пароли не совпадают' }, 401)
+    if (body.password !== body.confirm_password) return c.json({ message: 'Пароли не совпадают' }, 400)
 
+    const existingUser = userRepo.getByEmail(body.email)
+    if (existingUser) return c.json({ message: 'Этот email уже зарегистрирован' }, 400)
     const user = userRepo.create(body)
 
     const dto = userMapper.toDto(user)
