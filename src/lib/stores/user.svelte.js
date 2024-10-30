@@ -31,7 +31,6 @@ class UserStore {
   }
 
   async login({ email, password }) {
-    console.log(email, password)
     const res = await fetch(`${apiEndpoint}/login`, {
       method: 'POST',
       headers: {
