@@ -32,6 +32,7 @@
     </div>
     <div id="login-error-message" class="mt-2"></div>
     <button type="submit" class="btn btn-primary">Войти</button>
+    <span>{errorMessage}</span>
   </form>
 </div>
 <div class="col-12 text-center" id="account-info" style="display: none;">

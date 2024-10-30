@@ -1,13 +1,13 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import { logger } from 'hono/logger'
 import { serveStatic } from '@hono/node-server/serve-static'
-// import { getCookie } from 'hono/cookie'
-import { setCookie } from 'hono/cookie'
+import { getCookie, setCookie } from 'hono/cookie'
 // import { swaggerUI } from '@hono/swagger-ui'
 import { db } from './db/index.js'
 
 const app = new Hono()
-
+app.use(logger)
 app.use('/uploads/*', serveStatic({ root: './public/' }))
 // app.get('/ui', swaggerUI())
 
