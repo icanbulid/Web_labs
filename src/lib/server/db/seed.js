@@ -1,4 +1,5 @@
 import { db } from './index.js'
+
 const tours = [
   {
     title: 'Тур в Псков',
@@ -51,11 +52,10 @@ const tours = [
 ]
 
 
-
-const seed = async () => {
-
+const seedTables = () => {
   db.exec("DROP TABLE IF EXISTS users")
   db.exec("DROP TABLE IF EXISTS tours")
+  db.exec("DROP TABLE IF EXISTS comments")
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
@@ -69,26 +69,38 @@ const seed = async () => {
     )`)
 
   db.exec(`
-      INSERT INTO users (email, username, first_name, last_name, password, avatar_filename) VALUES
-      ('admin@example.com', 'admin', 'Admin', 'Admin', 'admin', 'XD.png'),
-      ('user@example.com', 'user', 'User', 'User', 'user', NULL)
-  `)
-
-
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS tours (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
-      description TEXT NOT NULL,
-      price INTEGER NOT NULL,
-      img_filename TEXT NOT NULL
-    )`
+      CREATE TABLE IF NOT EXISTS tours (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        price INTEGER NOT NULL,
+        img_filename TEXT NOT NULL
+      )`
   )
 
-  const insert = db.prepare(`
-    INSERT INTO tours (title, description, price, img_filename)
-    VALUES (@title, @description, @price, @img_filename)
+  db.exec(
     `
+    CREATE TABLE IF NOT EXISTS comments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      text TEXT NOT NULL
+    )
+    `
+  )
+}
+
+
+const seedData = () => {
+  db.exec(`
+    INSERT INTO users (email, username, first_name, last_name, password, avatar_filename) VALUES
+    ('admin@example.com', 'admin', 'Admin', 'Admin', 'admin', 'XD.png'),
+    ('user@example.com', 'user', 'User', 'User', 'user', NULL)
+`)
+
+  const insert = db.prepare(`
+  INSERT INTO tours (title, description, price, img_filename)
+  VALUES (@title, @description, @price, @img_filename)
+  `
   )
 
   const transaction = db.transaction(() => {
@@ -96,7 +108,19 @@ const seed = async () => {
       insert.run(tour)
     }
   })
+
   transaction()
+
+  db.exec(`
+    INSERT INTO comments (user_id, text) VALUES
+    (1, 'Привет, это мой первый комментарий!')`
+  )
+}
+
+const seed = () => {
+  seedTables()
+  seedData()
+  db.close()
 }
 
 seed()

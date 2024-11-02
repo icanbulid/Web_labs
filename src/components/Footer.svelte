@@ -26,7 +26,7 @@
       <div class="col-md-4 text-center">
         <h5 class="text-uppercase mb-3">Связь с нами</h5>
         <p>Есть вопросы? Позвоните нам:</p>
-        <p><strong>8 (495) 223-92-76</strong> <a class="nav-flex-link" href="/mail">Форма обратной связи</a></p>
+        <p><strong>8 (495) 223-92-76</strong> <a class="nav-flex-link" href="/message">Форма обратной связи</a></p>
       </div>
       <div class="container">
         <div class="row">

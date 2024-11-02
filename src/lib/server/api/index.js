@@ -37,8 +37,12 @@ const userRepo = {
   },
 
   updateAvatar(userId, avatarFilename) {
-    const res = db.prepare('UPDATE users SET avatar_filename = ? WHERE id = ?').run([avatarFilename, userId])
+    const _res = db.prepare('UPDATE users SET avatar_filename = ? WHERE id = ?').run([avatarFilename, userId])
     return this.getById(userId)
+  },
+
+  createComment(userId, comment) {
+    const _res = db.prepare('INSERT INTO comments (user_id, text) VALUES (?, ?)').run([userId, comment])
   }
 }
 
@@ -77,26 +81,7 @@ const setUserCookie = (c, user) => {
   setCookie(c, 'user', JSON.stringify(user), { 'expires': new Date(Date.now() + 1000 * 60 * 60 * 24), httpOnly: true })
 }
 
-app.post('/users/current/upload-avatar', async (c) => {
-  try {
-    const userCookie = getCookie(c, 'user')
-    if (!userCookie) return c.json({ message: 'Не авторизован' }, 401)
-    const user = JSON.parse(userCookie)
-    const formdata = await c.req.formData()
-    const { avatar } = Object.fromEntries(formdata.entries())
-    const ext = avatar.type.split('/')[1]
-    const newFilename = Date.now() + '.' + ext
-    const filePath = path.resolve('./static/uploads/', newFilename)
 
-    await fs.writeFile(filePath, Buffer.from(await avatar.arrayBuffer()))
-    const updatedUser = userRepo.updateAvatar(user.id, newFilename)
-
-    return c.json(userMapper.toDto(updatedUser))
-  } catch (error) {
-    console.error(error)
-    return c.json({ message: 'Ошибка сервера' })
-  }
-})
 
 app.post('/login', async (c) => {
   try {
@@ -152,6 +137,41 @@ app.get('/users/current', async (c) => {
   } catch (error) {
     console.error(error)
     return c.json({ message: 'Ошибка сервера' }, 500)
+  }
+})
+
+app.post('/users/current/upload-avatar', async (c) => {
+  try {
+    const userCookie = getCookie(c, 'user')
+    if (!userCookie) return c.json({ message: 'Не авторизован' }, 401)
+    const user = JSON.parse(userCookie)
+    const formdata = await c.req.formData()
+    const { avatar } = Object.fromEntries(formdata.entries())
+    const ext = avatar.type.split('/')[1]
+    const newFilename = Date.now() + '.' + ext
+    const filePath = path.resolve('./static/uploads/', newFilename)
+
+    await fs.writeFile(filePath, Buffer.from(await avatar.arrayBuffer()))
+    const updatedUser = userRepo.updateAvatar(user.id, newFilename)
+
+    return c.json(userMapper.toDto(updatedUser))
+  } catch (error) {
+    console.error(error)
+    return c.json({ message: 'Ошибка сервера' })
+  }
+})
+
+app.post('/users/current/create-comment', async (c) => {
+  try {
+    const userCookie = getCookie(c, 'user')
+    if (!userCookie) return c.json({ message: 'Не авторизован' }, 401)
+    const user = JSON.parse(userCookie)
+    const { text } = await c.req.json()
+    userRepo.createComment(user.id, text)
+    return c.json({ message: 'Комментарий успешно добавлен' })
+  } catch (error) {
+    console.error(error)
+    return c.json({ message: 'Ошибка сервера' })
   }
 })
 

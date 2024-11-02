@@ -75,7 +75,25 @@ class UserStore {
   async uploadAvatar(formData) {
     const res = await fetch(`${apiEndpoint}/users/current/upload-avatar`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: formData,
+    })
+    const data = await res.json()
+    if (res.ok) this.#user = data
+    return data
+  }
+
+  async createComment(text) {
+    const res = await fetch(`${apiEndpoint}/users/current/create-comment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text
+      }),
     })
     const data = await res.json()
     if (res.ok) this.#user = data
